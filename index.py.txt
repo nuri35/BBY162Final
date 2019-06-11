@@ -1,0 +1,257 @@
+from tkinter import  *
+from tkinter import messagebox
+import time
+from tkinter import filedialog
+
+
+
+
+
+
+
+
+bilgiler = ["yazýlým", "12345"]
+
+
+denemeHakký = 3
+zaman = 0
+
+pencere = Tk()
+
+
+
+
+pencere.iconbitmap(r'file.png')
+
+photo = PhotoImage(file="resim_03.gif")
+resim = Label(pencere,image=photo)
+resim.pack()
+
+
+
+pencere.title("hacettepe kütüphanesi")
+
+pencere.geometry("550x350+350+50")
+
+
+
+
+
+
+
+
+
+yazý = Label(pencere)
+yazý.config(text = "uygulamaya hoþgeldiniz")
+yazý.pack()
+
+
+
+kAdýSor = Label(pencere)
+kAdýSor.config(text="kullanýcý adý:", bg="blue", fg="white", font=("Calibri Italic", 12))
+kAdýSor.pack()
+
+kAdýAl = Entry(pencere)
+kAdýAl.pack()
+
+þifreSor = Label(pencere)
+þifreSor.config(text="þifre:", bg="blue", fg="white", font=("Calibri Italic", 16))
+þifreSor.pack()
+
+þifreAl = Entry(pencere,  width="8", show="*")
+þifreAl.pack()
+
+
+
+sifremihatirla = Checkbutton(pencere, text="þifremi hatýrla")
+sifremihatirla.pack()
+
+kntrl = Label(pencere)
+kntrl.config(text="henüz sisteme giriþ yapýlmadý.")
+kntrl.pack()
+
+
+def gir():
+    global denemeHakký, zaman
+
+    if denemeHakký<= 0:
+        if time.time()-zaman  >= 5:
+            denemeHakký = 3
+        else:
+            sonuc.config(text="zaman aþýmý 5 saniye bekle.")
+        return False
+
+
+    kAdý = kAdýAl.get()
+    þifre = þifreAl.get()
+    print (kAdý, " - ", þifre)
+    print("bilgiler kontrol ediliyor sistem tarafýndan")
+
+    if kAdý == bilgiler[0] and þifre == bilgiler[1]:
+        print("hacettepe kataloðuna giriþ yapýldý")
+        sonuc.config(text="henüz giriþ yapýlmadý")
+        yenialan()
+
+
+    elif kAdý != bilgiler[0] and þifre == bilgiler[1]:
+        print("kullanýcý adý hatalý")
+        denemeHakký -= 1
+        if denemeHakký == 0:
+            zaman = time.time()
+        sonuc.config(text="bilgiler yanlýþ! kalan deneme: %d" % denemeHakký)
+        kntrl.config(text="kullanýcý adýnýz yanlýþ.")
+    elif kAdý == bilgiler[0] and þifre != bilgiler[1]:
+        print("Þifre hatalý")
+        denemeHakký -= 1
+        if denemeHakký == 0:
+            zaman = time.time()
+        sonuc.config(text="bilgiler yanlýþ! kalan deneme: %d" % denemeHakký)
+        kntrl.config(text="Þifreniz hatalý")
+
+
+
+    else:
+        print("bilgiler yanlýs!")
+        denemeHakký -= 1
+        if denemeHakký == 0:
+            zaman = time.time()
+        sonuc.config(text="bilgiler yanlýþ! kalan deneme: %d" %denemeHakký)
+
+
+
+
+
+
+girtuþ = Button(pencere)
+girtuþ.config(text="giriþ yap", bg="blue", fg="white", activebackground="blue",
+              activeforeground="white", font=("Calibri", 12), command=gir)
+girtuþ.pack()
+
+sonuc = Label(pencere)
+sonuc.config(text = "henüz giriþ yapýlmadý")
+sonuc.pack()
+
+çýktuþ = Button(pencere)
+çýktuþ.config(text="Uygulamadan Çýk", bg="blue", fg="white", activebackground="blue",
+              activeforeground="white", font=("Calibri", 12), command=pencere.destroy)
+
+def yenialan():
+
+    def katalog_listeleri():
+        pencerex = Tk()
+        pencerex.configure(background="white")
+
+
+
+
+        cýkýs = Button(pencerex, text="Kapat", command=pencerex.destroy, fg="white", bg="blue", cursor="man")
+        cýkýs.pack()
+
+    global kitap, kitapadýalaný
+    global yazaradý, yazaradýalaný
+    global yýl, yayýnyýlý
+
+    anaSayfa = Tk()
+    anaSayfa.title("Elektronik Kataloð taramasý")
+
+    anaSayfa.configure(background="lightblue")
+    anaSayfa.geometry("550x350+350+50")
+    anaSayfa.resizable(0, 0)
+    giriþ = Label(anaSayfa,
+                  text="kataloð sistemine giriþ baþaarýlý   \n  aramak istediðiniz karakteri giriniz",
+                  bg="lightblue", fg="brown", font=("Calibri Italic", 19)).grid()
+
+    kitapadýalaný = ["Makina bilgisi : makine bilgisine giriþ", "Industrial automation and robotics", "çalýkuþu",
+                     "Tuhaf kütüphane"]
+    yazaradýalaný = ["Akkurt, Mustafa", "Gupta, A. K", "reþat nuri güntekin", "Murakami, Haruki"]
+    yayýnyýlý = ["2011", "2007", "1942", "1949"]
+
+    kitaparama = Label(anaSayfa, text="aramak istediðiniz kitap adý:", bg="lightblue", fg="white",
+                       font=("Calibri Italic", 13)).grid()
+    kitap = Entry(anaSayfa,width=27)
+    kitap.grid()
+    aramabutonu = Button(anaSayfa, text="ARA", bg="white", fg="black", font=("calibri", 10), cursor="star",
+                         command=giris1).grid()
+
+    kitaparama = Label(anaSayfa, text="aramak istediðiniz eser adý:", bg="lightblue", fg="white",
+                       font=("Calibri Italic", 13)).grid()
+    yazaradý = Entry(anaSayfa, width=27)
+    yazaradý.grid()
+    aramabutonu = Button(anaSayfa, text="ARA", bg="white", fg="black", font=("calibri", 10), cursor="star",
+                         command=giris2).grid()
+
+    kitaparama = Label(anaSayfa, text="aramak istediðiniz yayýn yýlý :", bg="lightblue", fg="white",
+                       font=("Calibri Italic", 13)).grid()
+    yýl = Entry(anaSayfa, width=27)
+    yýl.grid()
+    aramabutonu = Button(anaSayfa, text="ARA", bg="white", fg="black", font=("calibri", 10), cursor="star",
+                         command=giris3).grid()
+
+
+    cikis = Button(anaSayfa, text="Kapat", command=exit, fg="black", bg="white", cursor="man")
+    cikis.grid()
+
+
+
+
+def giris3():
+    yýlý = yýl.get()
+
+    if yýlý == yayýnyýlý[0]:
+        messagebox.showinfo("katalog sistemindeki kitap", "KÝTAP ADI:Makina bilgisi : makine bilgisine giriþ  \n YAZAR ADI: Akkurt, Mustafa \n YAYIN YILI: 2011")
+
+    elif yýlý ==yayýnyýlý[1]:
+        messagebox.showinfo("katalog sistemindeki kitap", "KÝTAP ADI: Industrial automation and robotics \n YAZAR ADI: Gupta, A. K \n YAYIN YILI: 2007")
+
+
+
+    elif yýlý == yayýnyýlý[2]:
+        messagebox.showinfo("katalog sistemindeki kitap","KÝTAP ADI: ÇALIKUÞU \n YAZAR ADI: REÞAT NURÝ GÜNTEKÝN \n TÜR:ROMAN \n YAYIN YILI: 1942")
+
+    elif yýlý == yayýnyýlý[3]:
+        messagebox.showinfo("katalog sistemindeki kitap","KÝTAP ADI: Tuhaf kütüphane \n YAZAR ADI: Murakami, Haruki  \n YAYIN YILI: 1949")
+    else:
+        soru = messagebox.showerror("hatakodu04xx234","Aradýðýnýz kaynak katalog kaydýnda bulunmamaktadýr. ")
+
+
+
+def giris2():
+    yaz = yazaradý.get()
+
+    if yaz == yazaradýalaný[0]:
+        messagebox.showinfo("katalog sistemindeki kitap", "KÝTAP ADI:Makina bilgisi : makine bilgisine giriþ  \n YAZAR ADI: Akkurt, Mustafa \n YAYIN YILI: 2011")
+
+    elif yaz ==yazaradýalaný[1]:
+        messagebox.showinfo("katalog sistemindeki kitap", "KÝTAP ADI: Industrial automation and robotics \n YAZAR ADI: Gupta, A. K \n YAYIN YILI: 2007")
+
+    elif yaz == yazaradýalaný[2]:
+        messagebox.showinfo("katalog sistemindeki kitap","KÝTAP ADI: ÇALIKUÞU \n YAZAR ADI: REÞAT NURÝ GÜNTEKÝN \n TÜR:ROMAN \n YAYIN YILI: 1942")
+
+    elif yaz == yazaradýalaný[3]:
+        messagebox.showinfo("katalog sistemindeki kitap","KÝTAP ADI: Tuhaf kütüphane \n YAZAR ADI: Murakami, Haruki  \n YAYIN YILI: 1949")
+    else :
+        soru = messagebox.showerror("hatakodu03244xx234","Aradýðýnýz kaynak katalog kaydýnda bulunmamaktadýr. ")
+
+def giris1():
+    adý = kitap.get()
+
+    if adý == kitapadýalaný[0]:
+
+        messagebox.showinfo("katalog sistemindeki kitap", "KÝTAP ADI:Makina bilgisi : makine bilgisine giriþ  \n YAZAR ADI: Akkurt, Mustafa \n YAYIN YILI: 2011")
+
+    elif adý == kitapadýalaný[1]:
+        messagebox.showinfo("katalog sistemindeki kitap", "KÝTAP ADI: Industrial automation and robotics \n YAZAR ADI: Gupta, A. K \n YAYIN YILI: 2007")
+
+    elif adý == kitapadýalaný[2]:
+        messagebox.showinfo("katalog sistemindeki kitap","KÝTAP ADI: ÇALIKUÞU \n YAZAR ADI: REÞAT NURÝ GÜNTEKÝN \n YAYIN YILI: 1942")
+
+    elif adý == kitapadýalaný[3]:
+        messagebox.showinfo("katalog sistemindeki kitap","KÝTAP ADI: Tuhaf kütüphane \n YAZAR ADI: Murakami, Haruki  \n YAYIN YILI: 1949")
+    else:
+        soru = messagebox.showerror("hatakodu04x32322x234","Aradýðýnýz kaynak katalog kaydýnda bulunmamaktadýr. ")
+
+
+mainloop()
+
+
+
